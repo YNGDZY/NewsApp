@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">News App</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="no_articles">No articles available</string>
+    <string name="techradar">techradar</string>
+    <string name="techcrunch">techcrunch</string>
+    <string name="ign">ign</string>
+    <string name="recode">engadget</string>
+    <string name="hackernews">hacker-news</string>
+    <string name="select">Please select a news source</string>
+    <string name="go">Go!</string>
+</resources>
