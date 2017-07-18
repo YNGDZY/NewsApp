@@ -24,7 +24,6 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         super(context, 0, articleList);
     }
 
-
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -40,24 +39,9 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         String title = currentArticle.getmTitle();
         titleText.setText(title);
 
-
-        TextView authorText = (TextView) listItemView.findViewById(R.id.authorTextView);
-        String authors = currentArticle.getmAuthor();
-        authorText.setText(authors);
-
-        TextView descriptionText = (TextView) listItemView.findViewById(R.id.descriptionTextView);
-        String description = currentArticle.getmDescription();
-        descriptionText.setText(description);
-
-        ImageView image = (ImageView) listItemView.findViewById(R.id.newsImageView);
-        Bitmap bmp = currentArticle.getmImage();
-        if(bmp != null) {
-            image.setImageBitmap(bmp);
-        }else{
-            image.setImageResource(R.drawable.noimage);
-        }
-
-
+        TextView sectionText = (TextView) listItemView.findViewById(R.id.sectionTextView);
+        String section = currentArticle.getmSection();
+        sectionText.setText(section);
 
         return listItemView;
     }

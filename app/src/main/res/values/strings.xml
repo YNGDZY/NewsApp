@@ -9,4 +9,6 @@
     <string name="hackernews">hacker-news</string>
     <string name="select">Please select a news source</string>
     <string name="go">Go!</string>
+    <string name="enter">Please enter text.</string>
+    <string name="instructions">Please enter search query above and press go button</string>
 </resources>

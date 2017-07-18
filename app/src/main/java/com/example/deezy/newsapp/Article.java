@@ -9,36 +9,24 @@ import android.media.Image;
 
 public class Article {
     private String mUrl;
-    private Bitmap mImage;
-    private String mAuthor;
+    private String mSection;
     private String mTitle;
-    private String mDescription;
 
-    public Article(String Url,Bitmap Image, String Author, String Title, String Description){
+    public Article(String Url, String Title, String Section){
         mUrl = Url;
-        mImage = Image;
-        mAuthor = Author;
+        mSection = Section;
         mTitle = Title;
-        mDescription = Description;
     }
 
     public String getmUrl() {
         return mUrl;
     }
 
-    public Bitmap getmImage() {
-        return mImage;
-    }
-
-    public String getmAuthor() {
-        return mAuthor;
-    }
-
     public String getmTitle() {
         return mTitle;
     }
 
-    public String getmDescription() {
-        return mDescription;
+    public String getmSection() {
+        return mSection;
     }
 }

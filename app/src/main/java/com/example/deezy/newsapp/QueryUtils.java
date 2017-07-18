@@ -1,4 +1,5 @@
 package com.example.deezy.newsapp;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
@@ -25,16 +26,13 @@ import static android.R.string.no;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 
-
 public final class QueryUtils {
 
 
     private QueryUtils() {
     }
 
-
     public static final String LOG_TAG = QueryUtils.class.getSimpleName();
-
 
     public static List<Article> fetchArticleData(String requestUrl) {
 
@@ -51,7 +49,6 @@ public final class QueryUtils {
         return articles;
     }
 
-
     private static URL createUrl(String stringUrl) {
         URL url = null;
         try {
@@ -61,7 +58,6 @@ public final class QueryUtils {
         }
         return url;
     }
-
 
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
@@ -78,7 +74,6 @@ public final class QueryUtils {
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
-
 
             if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
@@ -98,7 +93,6 @@ public final class QueryUtils {
         }
         return jsonResponse;
     }
-
 
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
@@ -121,82 +115,51 @@ public final class QueryUtils {
 
         List<Article> articles = new ArrayList<Article>();
 
-        JSONArray items;
+        JSONObject response;
+        JSONArray results;
 
         try {
             JSONObject root = new JSONObject(articleJSON);
             try {
-                items = root.getJSONArray("articles");
+                response = root.getJSONObject("response");
             } catch (JSONException e) {
                 Log.e(LOG_TAG, "No articles available", e);
-                items = null;
+                response = null;
+            }
+            try {
+                results = response.getJSONArray("results");
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "No articles available", e);
+                results = null;
             }
 
-            for (int i = 0; i < items.length(); i++) {
+            for (int i = 0; i < results.length(); i++) {
                 String Url;
-                String ImageUrl;
-                String Author;
                 String Title;
-                String Description;
+                String Section;
 
-                JSONObject it = items.getJSONObject(i);
+                JSONObject it = results.getJSONObject(i);
                 try {
-                    Url = it.getString("url");
+                    Url = it.getString("webUrl");
                 } catch (JSONException e) {
                     Log.e(LOG_TAG, "no url available", e);
                     Url = "No url available";
                 }
-                try {
-                    ImageUrl = it.getString("urlToImage");
-                } catch (JSONException e) {
-                    Log.e(LOG_TAG, "No image url available", e);
-                    ImageUrl = "No image url available";
-                }
-                try {
-                    Author = it.getString("author");
-                } catch (JSONException e) {
-                    Log.e(LOG_TAG, "No author available", e);
-                    Author = "No Author available";
-                }
-
 
                 try {
-                    Title = it.getString("title");
+                    Title = it.getString("webTitle");
                 } catch (JSONException e) {
                     Log.e(LOG_TAG, "No title available", e);
                     Title = "No title available";
                 }
 
                 try {
-                    Description = it.getString("description");
+                    Section = it.getString("sectionName");
                 } catch (JSONException e) {
-                    Log.e(LOG_TAG, "no description available");
-                    Description = "No description available";
+                    Log.e(LOG_TAG, "no section available");
+                    Section = "No section available";
                 }
-
-
-                URL url = null;
-                try {
-                    url = new URL("http://www.theshanngroup.com/wp-content/uploads/2017/05/no-image-available.jpg");
-                } catch (MalformedURLException e){
-                    Log.e(LOG_TAG,"malformed url");
-                }
-                try {
-                     url = new URL(ImageUrl);
-                }catch (MalformedURLException e){
-                    Log.e(LOG_TAG,"malformed URL");
-                }
-                Bitmap bmp;
-                try {
-                     bmp = BitmapFactory.decodeStream(
-                        url.openConnection().getInputStream());
-
-                }catch (IOException e){
-                    Log.e(LOG_TAG,"url connection failed");
-                    bmp = null;
-                }
-                articles.add(new Article(Url,bmp,Author,Title,Description));
-
+                articles.add(new Article(Url, Title, Section));
             }
         } catch (JSONException e) {
             Log.e("QueryUtils", "Problem parsing the book JSON results", e);
